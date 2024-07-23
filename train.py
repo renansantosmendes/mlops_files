@@ -123,9 +123,9 @@ def config_mlflow():
     Returns:
         None
     """
-    os.environ['MLFLOW_TRACKING_USERNAME'] = 'USERNAME'
-    os.environ['MLFLOW_TRACKING_PASSWORD'] = 'TOKEN'
-    mlflow.set_tracking_uri('URL')
+    os.environ['MLFLOW_TRACKING_USERNAME'] = 'renansantosmendes'
+    os.environ['MLFLOW_TRACKING_PASSWORD'] = '6d730ef4a90b1caf28fbb01e5748f0874fda6077'
+    mlflow.set_tracking_uri('https://dagshub.com/renansantosmendes/mlops-update-01.mlflow')
 
     mlflow.tensorflow.autolog(log_models=True,
                               log_input_examples=True,

@@ -6,6 +6,7 @@ on:
     branches:
     - layers
     - branch_01
+    - main
   workflow_dispatch:
   # Allows external webhook trigger
   repository_dispatch:
@@ -19,10 +20,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python 3.9
+      - name: Set up Python 3.10
         uses: actions/setup-python@v1
         with:
-          python-version: 3.9
+          python-version: 3.10
 
       - name: Install dependencies
         run: |
@@ -40,10 +41,10 @@ jobs:
 #        with:
 #          fetch-depth: 0
 #
-#      - name: Set up Python 3.9
+#      - name: Set up Python 3.10
 #        uses: actions/setup-python@v1
 #        with:
-#          python-version: 3.9
+#          python-version: 3.10
 #
 #      - name: Install dependencies
 #        run: |
@@ -62,10 +63,10 @@ jobs:
             with:
               fetch-depth: 0
 
-          - name: Set up Python 3.9
+          - name: Set up Python 3.10
             uses: actions/setup-python@v1
             with:
-                python-version: 3.9
+                python-version: 3.10
 
           - name: Install dependencies
             run: |
