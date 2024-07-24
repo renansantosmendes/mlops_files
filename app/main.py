@@ -1,5 +1,6 @@
 import os
 import mlflow
+import logging
 import numpy as np
 from pydantic import BaseModel
 from fastapi import FastAPI
@@ -11,6 +12,10 @@ class FetalHealthData(BaseModel):
     uterine_contractions: float
     severe_decelerations: float
 
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Fetal Health API",
               openapi_tags=[
@@ -40,23 +45,23 @@ def load_model():
     Raises:
         None
     """
-    print('reading model...')
-    MLFLOW_TRACKING_URI = 'https://dagshub.com/renansantosmendes/mlops-update-01.mlflow'
+    logging.info('reading model...')
+    MLFLOW_TRACKING_URI = 'https://dagshub.com/renansantosmendes/puc_lectures_mlops.mlflow'
     MLFLOW_TRACKING_USERNAME = 'renansantosmendes'
     MLFLOW_TRACKING_PASSWORD = '6d730ef4a90b1caf28fbb01e5748f0874fda6077'
     os.environ['MLFLOW_TRACKING_USERNAME'] = MLFLOW_TRACKING_USERNAME
     os.environ['MLFLOW_TRACKING_PASSWORD'] = MLFLOW_TRACKING_PASSWORD
-    print('setting mlflow...')
+    logging.info('setting mlflow...')
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-    print('creating client..')
+    logging.info('creating client..')
     client = mlflow.MlflowClient(tracking_uri=MLFLOW_TRACKING_URI)
-    print('getting registered model...')
+    logging.info('getting registered model...')
     registered_model = client.get_registered_model('fetal_health')
-    print('read model...')
+    logging.info(registered_model)
+    logging.info('read model...')
     run_id = registered_model.latest_versions[-1].run_id
-    logged_model = f'runs:/{run_id}/model'
-    loaded_model = mlflow.pyfunc.load_model(logged_model)
-    print(loaded_model)
+    loaded_model = mlflow.pyfunc.load_model(f'runs:/{run_id}/model')
+    logging.info(loaded_model)
     return loaded_model
 
 
@@ -111,7 +116,7 @@ def predict(request: FetalHealthData):
         request.uterine_contractions,
         request.severe_decelerations,
     ]).reshape(1, -1)
-    print(received_data)
+    logging.info(received_data)
     prediction = loaded_model.predict(received_data)
-    print(prediction)
+    logging.info(prediction)
     return {"prediction": str(np.argmax(prediction[0]))}
